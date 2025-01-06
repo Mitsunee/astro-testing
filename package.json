@@ -1,0 +1,70 @@
+{
+  "name": "astro-template",
+  "version": "0.0.0",
+  "description": "",
+  "author": "YOUR_NAME_HERE",
+  "license": "MIT",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "prepare": "simple-git-hooks",
+    "format": "prettier -w . --plugin=prettier-plugin-astro",
+    "format:check": "prettier -c . --plugin=prettier-plugin-astro",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix .",
+    "lint:strict": "eslint --max-warnings 0 .",
+    "dev": "astro dev",
+    "typecheck": "astro check && tsc --noEmit",
+    "test": "uvu -r esbuild-register tests -i utils",
+    "build:types": "astro sync",
+    "build": "astro build"
+  },
+  "nano-staged": {
+    "**/*.{js,jsx,ts,tsx,css,json,md,yml}": [
+      "prettier -w"
+    ],
+    "**/*.astro": [
+      "prettier -w --plugin=prettier-plugin-astro"
+    ]
+  },
+  "simple-git-hooks": {
+    "pre-commit": "pnpm nano-staged"
+  },
+  "browserslist": [
+    "last 2 versions",
+    ">0.5% and not dead"
+  ],
+  "dependencies": {
+    "@astrojs/preact": "^3.5.4",
+    "@csstools/postcss-global-data": "^3.0.0",
+    "@nanostores/preact": "^0.5.2",
+    "astro": "^4.16.18",
+    "classcat": "^5.0.5",
+    "nanostores": "^0.11.3",
+    "postcss": "^8.4.49",
+    "postcss-preset-env": "^10.1.3",
+    "preact": "^10.25.4",
+    "react": "npm:@preact/compat@^18.3.1",
+    "react-dom": "npm:@preact/compat@^18.3.1",
+    "sharp": "0.32.6"
+  },
+  "devDependencies": {
+    "@astrojs/check": "^0.9.4",
+    "@eslint/js": "^8.57.1",
+    "@types/node": "^22.10.5",
+    "esbuild": "^0.24.2",
+    "esbuild-register": "^3.6.0",
+    "eslint": "^8.57.0",
+    "eslint-config-foxkit": "4.2.0",
+    "eslint-config-foxkit-react": "^1.0.4",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-astro": "^1.3.1",
+    "eslint-plugin-import": "^2.31.0",
+    "nano-staged": "^0.8.0",
+    "prettier": "^3.4.2",
+    "prettier-plugin-astro": "^0.14.1",
+    "simple-git-hooks": "^2.11.1",
+    "typescript": "5.7.2",
+    "uvu": "^0.5.6"
+  }
+}
