@@ -64,8 +64,8 @@ importers:
         specifier: ^9.17.0
         version: 9.17.0
       eslint-config-foxkit:
-        specifier: 4.2.0
-        version: 4.2.0(@eslint/js@9.17.0)(eslint@9.17.0)(typescript@5.7.2)
+        specifier: 5.0.0
+        version: 5.0.0(@eslint/js@9.17.0)(eslint@9.17.0)(typescript@5.7.2)
       eslint-config-foxkit-react:
         specifier: ^1.0.4
         version: 1.0.4(@preact/compat@18.3.1(preact@10.25.4))(eslint@9.17.0)
@@ -1791,8 +1791,8 @@ packages:
       eslint: 8.57.0 || 9
       react: ^18.3.0 || 19
 
-  eslint-config-foxkit@4.2.0:
-    resolution: {integrity: sha512-E531obbaswWpOYuLR9bYUp9Q5M21jXi8ni86iCH1Uqp9ZW/lyW/rfDddiPrSCEYguinaKOj7g7Yj881BFuIj/A==}
+  eslint-config-foxkit@5.0.0:
+    resolution: {integrity: sha512-em5d3zNTbQc+F2TsyApVMI/rTxUj2ZblJ3y7gDEE14+WYT2GpZVzU02miy+vA3YHF520aqpuUZ+ORcsTbhbUsg==}
     peerDependencies:
       '@eslint/js': ^8.57.1 || 9
       eslint: 8.57.0 || 9
@@ -3338,6 +3338,13 @@ packages:
 
   typescript-auto-import-cache@0.3.5:
     resolution: {integrity: sha512-fAIveQKsoYj55CozUiBoj4b/7WpN0i4o74wiGY5JVUEoD0XiqDk1tJqTEjgzL2/AizKQrXxyRosSebyDzBZKjw==}
+
+  typescript-eslint@8.19.1:
+    resolution: {integrity: sha512-LKPUQpdEMVOeKluHi8md7rwLcoXHhwvWp3x+sJkMuq3gGm9yaYJtPo8sRZSblMFJ5pcOGCAak/scKf1mvZDlQw==}
+    engines: {node: ^18.18.0 || ^20.9.0 || >=21.1.0}
+    peerDependencies:
+      eslint: ^8.57.0 || ^9.0.0
+      typescript: '>=4.8.4 <5.8.0'
 
   typescript@5.7.2:
     resolution: {integrity: sha512-i5t66RHxDvVN40HfDd1PsEThGNnlMCMT3jMUuoh9/0TaqWevNontacunWyN02LA9/fIbEWlcHZcgTKb9QoaLfg==}
@@ -5527,15 +5534,14 @@ snapshots:
       globals: 15.14.0
       react: '@preact/compat@18.3.1(preact@10.25.4)'
 
-  eslint-config-foxkit@4.2.0(@eslint/js@9.17.0)(eslint@9.17.0)(typescript@5.7.2):
+  eslint-config-foxkit@5.0.0(@eslint/js@9.17.0)(eslint@9.17.0)(typescript@5.7.2):
     dependencies:
       '@eslint/js': 9.17.0
-      '@typescript-eslint/eslint-plugin': 8.19.1(@typescript-eslint/parser@8.19.1(eslint@9.17.0)(typescript@5.7.2))(eslint@9.17.0)(typescript@5.7.2)
-      '@typescript-eslint/parser': 8.19.1(eslint@9.17.0)(typescript@5.7.2)
       eslint: 9.17.0
       eslint-plugin-no-await-in-promise: 2.0.1(eslint@9.17.0)
       globals: 15.14.0
       typescript: 5.7.2
+      typescript-eslint: 8.19.1(eslint@9.17.0)(typescript@5.7.2)
     transitivePeerDependencies:
       - supports-color
 
@@ -7563,6 +7569,16 @@ snapshots:
   typescript-auto-import-cache@0.3.5:
     dependencies:
       semver: 7.6.3
+
+  typescript-eslint@8.19.1(eslint@9.17.0)(typescript@5.7.2):
+    dependencies:
+      '@typescript-eslint/eslint-plugin': 8.19.1(@typescript-eslint/parser@8.19.1(eslint@9.17.0)(typescript@5.7.2))(eslint@9.17.0)(typescript@5.7.2)
+      '@typescript-eslint/parser': 8.19.1(eslint@9.17.0)(typescript@5.7.2)
+      '@typescript-eslint/utils': 8.19.1(eslint@9.17.0)(typescript@5.7.2)
+      eslint: 9.17.0
+      typescript: 5.7.2
+    transitivePeerDependencies:
+      - supports-color
 
   typescript@5.7.2: {}
 
