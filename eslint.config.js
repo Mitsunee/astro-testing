@@ -1,75 +1,95 @@
-import foxkit from "eslint-config-foxkit/configs/base.js";
+import foxkit from "eslint-config-foxkit/flat.js";
 import foxkitReact from "eslint-config-foxkit-react/configs/index.js";
+import prettierCfg from "eslint-config-prettier";
 import astroPlugin from "eslint-plugin-astro";
 import importPlugin from "eslint-plugin-import";
 import reactPlugin from "eslint-plugin-react";
+import tsEslint from "typescript-eslint";
 
-const __dirname = new URL(".", import.meta.url).pathname.slice(0, -1);
+/**
+ * @type {import("typescript-eslint").ConfigWithExtends}
+ */
+const ignorePaths = {
+  ignores: [
+    "dist",
+    "public",
+    ".astro",
+    ".astro-cache",
+    "src/env.d.ts",
+    ".pnpm-store"
+  ]
+};
 
 // patch astro support in foxkit configs
-foxkit.typescript.files.push("**/*.astro");
-foxkitReact.jsx.files.push("**/*.astro");
+/**
+ * @type {import("typescript-eslint").ConfigWithExtends}
+ */
+const foxkitTS = {
+  files: foxkit.tsFiles.concat(["**/*.astro", "**/*.astro/*.ts"]),
+  extends: [
+    foxkit.typescript,
+    foxkit.configureTS({ tsconfigRootDir: import.meta.dirname })
+  ]
+};
+
+//patch astro support in foxkit-react configs
+/**
+ * @type {import("typescript-eslint").ConfigWithExtends}
+ */
+const jsxCfgs = {
+  files: foxkitReact.jsx.files.concat("**/*.astro"),
+  extends: [foxkitReact.jsx, reactPlugin.configs.flat["jsx-runtime"]]
+};
 foxkitReact.preact.rules["react/jsx-filename-extension"][1].extensions.push(
   ".astro"
 );
-const foxkitTSCfg = foxkit.configureTS({ tsconfigRootDir: __dirname });
 
-// patch astro config with additional react-plugin rules
-const astroRecommended = astroPlugin.configs.recommended.find(
-  cfg => cfg.name == "astro/recommended"
-);
-if (!astroRecommended || typeof astroRecommended.rules != "object") {
-  throw new Error("Could not find astro/recommended config");
-}
-Object.assign(astroRecommended.rules, {
-  "react/no-unknown-property": "off",
-  "react/no-unescaped-entities": "off",
-  "react/jsx-key": "off"
-});
+// patch astro config with typescript parserOptions additional react-plugin rules
+/**
+ * @type {import("typescript-eslint").ConfigArray}
+ */
+const astroCfgs = astroPlugin.configs.recommended
+  .map(cfg => {
+    if (cfg.name == "astro/base" || cfg.name == "astro/base/typescript") {
+      cfg.languageOptions.parserOptions.projectService = false;
+      cfg.languageOptions.parserOptions.project = true;
+    }
+    return cfg;
+  })
+  .concat({
+    name: "astro/custom-react-compat",
+    files: ["**/*.astro"],
+    rules: {
+      "react/no-unknown-property": "off",
+      "react/no-unescaped-entities": "off",
+      "react/jsx-key": "off"
+    }
+  });
 
-// patch astro/*.ts files to have typed linting
-const astroTS = astroPlugin.configs.recommended.find(
-  cfg => cfg.name == "astro/base/typescript"
-);
-if (!astroTS || typeof astroTS.languageOptions != "object") {
-  throw new Error("Could not find astro/base/typescript config");
-}
-Object.assign(
-  astroTS.languageOptions.parserOptions,
-  foxkitTSCfg.languageOptions.parserOptions
-);
+// patch import plugin config with custom file types and some extra rules
+/**
+ * @type {import("typescript-eslint").ConfigWithExtends}
+ */
+const importCfg = {
+  name: "import/custom-rules",
+  files: ["**/*.mjs", "**/*.ts?(x)", "**/*.astro"],
+  extends: [importPlugin.flatConfigs.recommended],
+  rules: {
+    "sort-imports": "off",
+    "import/order": "off",
+    "import/first": "warn",
+    "import/newline-after-import": "warn",
+    "import/no-unresolved": "off"
+  }
+};
 
-// patch import plugin config
-Object.assign(importPlugin.flatConfigs.recommended.rules, {
-  "sort-imports": "off",
-  "import/order": "off",
-  "import/first": "warn",
-  "import/newline-after-import": "warn",
-  "import/no-unresolved": "off"
-});
-importPlugin.flatConfigs.recommended.files = [
-  "**/*.mjs",
-  "**/*.ts?(x)",
-  "**/*.astro"
-];
-
-export default [
-  {
-    ignores: [
-      "dist",
-      "public",
-      ".astro",
-      ".astro-cache",
-      "src/env.d.ts",
-      ".pnpm-store"
-    ]
-  },
+export default tsEslint.config([
+  ignorePaths,
   foxkit.base,
-  foxkit.typescript,
-  foxkitTSCfg,
-  foxkitReact.jsx,
+  foxkitTS,
   foxkitReact.preact,
-  reactPlugin.configs.flat["jsx-runtime"],
-  ...astroPlugin.configs.recommended,
-  importPlugin.flatConfigs.recommended
-];
+  jsxCfgs,
+  astroCfgs,
+  importCfg,
+  prettierCfg
+]);
