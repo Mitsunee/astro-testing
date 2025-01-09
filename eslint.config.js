@@ -1,7 +1,7 @@
 import foxkit from "eslint-config-foxkit/flat.js";
-import foxkitReact from "eslint-config-foxkit-react/configs/index.js";
-import prettierCfg from "eslint-config-prettier";
-import astroPlugin from "eslint-plugin-astro";
+import foxkitReact from "eslint-config-foxkit-react/flat.js";
+import prettier from "eslint-config-prettier";
+import * as astroPlugin from "eslint-plugin-astro";
 import importPlugin from "eslint-plugin-import";
 import reactPlugin from "eslint-plugin-react";
 import tsEslint from "typescript-eslint";
@@ -10,6 +10,7 @@ import tsEslint from "typescript-eslint";
  * @type {import("typescript-eslint").ConfigWithExtends}
  */
 const ignorePaths = {
+  name: "ignorePaths",
   ignores: [
     "dist",
     "public",
@@ -28,7 +29,7 @@ const foxkitTS = {
   files: foxkit.tsFiles.concat(["**/*.astro", "**/*.astro/*.ts"]),
   extends: [
     foxkit.typescript,
-    foxkit.configureTS({ tsconfigRootDir: import.meta.dirname })
+    foxkit.configureTS({ project: true, tsconfigRootDir: import.meta.dirname })
   ]
 };
 
@@ -36,7 +37,7 @@ const foxkitTS = {
 /**
  * @type {import("typescript-eslint").ConfigWithExtends}
  */
-const jsxCfgs = {
+const jsxCfg = {
   files: foxkitReact.jsx.files.concat("**/*.astro"),
   extends: [foxkitReact.jsx, reactPlugin.configs.flat["jsx-runtime"]]
 };
@@ -48,10 +49,10 @@ foxkitReact.preact.rules["react/jsx-filename-extension"][1].extensions.push(
 /**
  * @type {import("typescript-eslint").ConfigArray}
  */
-const astroCfgs = astroPlugin.configs.recommended
+const astroCfg = astroPlugin.configs.recommended
   .map(cfg => {
     if (cfg.name == "astro/base" || cfg.name == "astro/base/typescript") {
-      cfg.languageOptions.parserOptions.projectService = false;
+      // someone put `null` here which is not valid and breaks linting
       cfg.languageOptions.parserOptions.project = true;
     }
     return cfg;
@@ -72,7 +73,7 @@ const astroCfgs = astroPlugin.configs.recommended
  */
 const importCfg = {
   name: "import/custom-rules",
-  files: ["**/*.mjs", "**/*.ts?(x)", "**/*.astro"],
+  files: ["**/*.?(m)js", "**/*.ts?(x)", "**/*.astro"],
   extends: [importPlugin.flatConfigs.recommended],
   rules: {
     "sort-imports": "off",
@@ -80,6 +81,9 @@ const importCfg = {
     "import/first": "warn",
     "import/newline-after-import": "warn",
     "import/no-unresolved": "off"
+  },
+  languageOptions: {
+    ecmaVersion: foxkit.base.languageOptions.ecmaVersion
   }
 };
 
@@ -88,8 +92,8 @@ export default tsEslint.config([
   foxkit.base,
   foxkitTS,
   foxkitReact.preact,
-  jsxCfgs,
-  astroCfgs,
+  jsxCfg,
+  astroCfg,
   importCfg,
-  prettierCfg
+  prettier
 ]);

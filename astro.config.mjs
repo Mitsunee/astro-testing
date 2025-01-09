@@ -1,5 +1,4 @@
 import preact from "@astrojs/preact";
-// eslint-disable-next-line import/named
 import { defineConfig } from "astro/config";
 
 // https://astro.build/config
