@@ -6,6 +6,7 @@ import * as importPlugin from "eslint-plugin-import";
 import tsEslint from "typescript-eslint";
 
 /**
+ * Configure which files to ignore when linting
  * @type {import("typescript-eslint").ConfigWithExtends}
  */
 const ignorePaths = {
@@ -13,8 +14,8 @@ const ignorePaths = {
   ignores: ["dist", "public", ".astro", "src/env.d.ts"]
 };
 
-// patch astro support in foxkit configs
 /**
+ * Patch foxkit configs to add astro support
  * @type {import("typescript-eslint").ConfigWithExtends}
  */
 const foxkitTS = {
@@ -25,11 +26,12 @@ const foxkitTS = {
   ]
 };
 
-//patch astro support in foxkit-react configs
 /**
+ * Patch foxkit-react configs to add astro support and configure jsx runtime
  * @type {import("typescript-eslint").ConfigWithExtends}
  */
 const jsxCfg = {
+  name: "jsx/runtime-config",
   files: foxkitReact.jsx.files.concat("**/*.astro"),
   extends: [foxkitReact.jsx],
   rules: {
@@ -38,8 +40,9 @@ const jsxCfg = {
   }
 };
 
-// patch astro config with typescript parserOptions additional react-plugin rules
 /**
+ * Patch astro config with typescript parserOptions, configure rules and disable
+ * some react plugin rules that don't make sense for astro's JSX
  * @type {import("typescript-eslint").ConfigArray}
  */
 const astroCfg = astroPlugin.configs.recommended
@@ -65,9 +68,8 @@ const astroCfg = astroPlugin.configs.recommended
     }
   });
 
-//
 /**
- * patch import plugin config with custom file types and configure rules
+ * Patch import plugin config with custom file extensions and configure rules
  * @type {import("typescript-eslint").ConfigWithExtends}
  */
 const importCfg = {
@@ -99,6 +101,7 @@ const importCfg = {
     }
   }
 };
+
 /**
  * Allows config files (such as this very file) to default export again
  * @type {import("typescript-eslint").ConfigWithExtends}
