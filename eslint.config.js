@@ -11,14 +11,7 @@ import tsEslint from "typescript-eslint";
  */
 const ignorePaths = {
   name: "ignorePaths",
-  ignores: [
-    "dist",
-    "public",
-    ".astro",
-    ".astro-cache",
-    "src/env.d.ts",
-    ".pnpm-store"
-  ]
+  ignores: ["dist", "public", ".astro", "src/env.d.ts"]
 };
 
 // patch astro support in foxkit configs
