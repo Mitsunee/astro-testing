@@ -3,7 +3,6 @@ import foxkitReact from "eslint-config-foxkit-react/flat.js";
 import prettier from "eslint-config-prettier";
 import * as astroPlugin from "eslint-plugin-astro";
 import * as importPlugin from "eslint-plugin-import";
-import reactPlugin from "eslint-plugin-react";
 import tsEslint from "typescript-eslint";
 
 /**
@@ -32,7 +31,11 @@ const foxkitTS = {
  */
 const jsxCfg = {
   files: foxkitReact.jsx.files.concat("**/*.astro"),
-  extends: [foxkitReact.jsx, reactPlugin.configs.flat["jsx-runtime"]]
+  extends: [foxkitReact.jsx],
+  rules: {
+    "react/react-in-jsx-scope": "off",
+    "react/jsx-uses-react": "off"
+  }
 };
 
 // patch astro config with typescript parserOptions additional react-plugin rules
