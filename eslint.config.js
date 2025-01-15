@@ -48,9 +48,12 @@ const astroCfg = astroPlugin.configs.recommended
     return cfg;
   })
   .concat({
-    name: "astro/custom-react-compat",
+    name: "astro/custom-rules",
     files: ["**/*.astro"],
     rules: {
+      "astro/no-unused-css-selector": "warn",
+      "astro/prefer-object-class-list": "warn",
+      //react-plugin compat:
       "react/no-unknown-property": "off",
       "react/no-unescaped-entities": "off",
       "react/jsx-key": "off",
