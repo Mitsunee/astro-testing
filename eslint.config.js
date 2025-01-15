@@ -41,9 +41,6 @@ const jsxCfg = {
   files: foxkitReact.jsx.files.concat("**/*.astro"),
   extends: [foxkitReact.jsx, reactPlugin.configs.flat["jsx-runtime"]]
 };
-foxkitReact.preact.rules["react/jsx-filename-extension"][1].extensions.push(
-  ".astro"
-);
 
 // patch astro config with typescript parserOptions additional react-plugin rules
 /**
@@ -63,7 +60,8 @@ const astroCfg = astroPlugin.configs.recommended
     rules: {
       "react/no-unknown-property": "off",
       "react/no-unescaped-entities": "off",
-      "react/jsx-key": "off"
+      "react/jsx-key": "off",
+      "react/jsx-filename-extension": "off"
     }
   });
 
