@@ -1,37 +1,20 @@
 ---
-import fox from "~/assets/pexels-erik-karits-3722722.jpg";
 import BaseLayout from "~/layouts/BaseLayout.astro";
-import { ThemeSelector } from "~/components/ThemeSelector";
-import { getImage } from "astro:assets";
 
-const [foxPNG, foxAVIF] = await Promise.all([
-  getImage({ src: fox, width: 640, format: "png" }),
-  getImage({ src: fox, width: 640, format: "avif" })
-]);
+const Heading = "h2" as const;
 ---
 
 <BaseLayout title="Astro" description="Astro Preact Template">
   <h1>Astro</h1>
-  <h2>Theme Handler</h2>
-  You can edit this component in
-  <code>./src/components/ThemeSelector.tsx</code>.
-  <ThemeSelector client:only="preact" />
-  <h2>Picture test</h2>
-  <picture>
-    <source type="image/avif" srcset={foxAVIF.src} />
-    <img
-      src={foxPNG.src}
-      width={foxPNG.attributes.width}
-      height={foxPNG.attributes.height}
-      alt="Brown Fox on Tree Stump by Erik Karits"
-    />
-  </picture>
+  <Heading class="heading">Reproduction Example</Heading>
 </BaseLayout>
 
 <style>
-  picture,
-  img {
-    max-width: 100%;
-    height: auto;
+  .heading {
+    display: block;
+    border-bottom: 1px solid var(--highlight);
+    padding: 1rem;
+    margin: 0px;
+    font-size: 1.5rem;
   }
 </style>
